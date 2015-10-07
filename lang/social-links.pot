@@ -1,0 +1,74 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ts-social-links\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+
+msgid "List your social links"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Icon Size"
+msgstr ""
+
+msgid "16x16"
+msgstr ""
+
+msgid "24x24"
+msgstr ""
+
+msgid "32x32"
+msgstr ""
+
+msgid "48x48"
+msgstr ""
+
+msgid "Show RSS link"
+msgstr ""
+
+msgid "Facebook page"
+msgstr ""
+
+msgid "Google+ page"
+msgstr ""
+
+msgid "Twitter username"
+msgstr ""
+
+msgid "You Tube username"
+msgstr ""
+
+msgid "LinkedIn"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Company"
+msgstr ""
+
+msgid "Group"
+msgstr ""
+
+msgid "RSS"
+msgstr ""
+
+msgid "Facebook"
+msgstr ""
+
+msgid "Google+"
+msgstr ""
+
+msgid "Twitter"
+msgstr ""
+
+msgid "You Tube"
+msgstr ""
+
