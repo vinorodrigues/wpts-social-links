@@ -38,16 +38,23 @@ class TS_Social_Links_Widget extends WP_Widget {
 		return $o;
 	}
 
-	public static function l($url, $what, $size = 16, $style = '', $type = false) {
-		$o = '<a href="'. $url . '" class="social-link sl-' . $what . '"';
+	public static function l($url, $what, $size = 16, $style = '', $use_fa = false, $type = false) {
+		$o = '<a href="'. $url . '" class="sla-' . $size . ' sl-' . $what . '"';
 		if ($type) $o .= ' type="' . $type . '"';
-		$o .= '>' . self::i($what, $size, $style) . '</a>';
+		$o .= '>';
+		if ($use_fa) {
+			if (('' == $style) && ('instagram' != $what)) $what .= '-square';
+			$o .= '<i class="fa fa-' . $what . ' sl-fa-' . $size . '"></i>';
+		} else
+			$o .= self::i($what, $size, $style);
+		$o .= '</a>';
 		echo $o;
 	}
 
 	function form($instance) {
 		$instance = wp_parse_args( (array) $instance, array(
 			'title' => '',
+			'use_fa' => false,
 			'size' => 32,
 			'style' => '',
 			'youtube' => '',
@@ -64,6 +71,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 			) );
 
 		$title = esc_attr($instance['title']);
+		$use_fa = esc_attr($instance['use_fa']);
 		$size = intval( esc_attr($instance['size']) );
 		$style = esc_attr($instance['style']);
 		$youtube = esc_attr($instance['youtube']);
@@ -80,8 +88,13 @@ class TS_Social_Links_Widget extends WP_Widget {
 		?>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'ts_social_links' ); ?>:</label>
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'ts_social_links' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
+		</p>
+
+		<p>
+		<input id="<?php echo $this->get_field_id( 'use_fa' ); ?>" name="<?php echo $this->get_field_name( 'use_fa' ); ?>" type="checkbox" value="1" <?php echo ($use_fa) ? 'checked="checked"' : ''; ?> />
+		<label for="<?php echo $this->get_field_id( 'use_fa' ); ?>"><?php _e( 'Use Font-Awesome if available', 'ts_social_links' ); ?></label>
 		</p>
 
 		<p>
@@ -140,24 +153,23 @@ class TS_Social_Links_Widget extends WP_Widget {
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'tumblr' ); ?>"><?= $this->i('tumblr', 16) ?> <?php _e( 'Tumblr xxxxx', 'ts_social_links' ); ?>:</label>
+		<label for="<?php echo $this->get_field_id( 'tumblr' ); ?>"><?= $this->i('tumblr', 16) ?> <?php _e( 'Tumblr account', 'ts_social_links' ); ?>:</label>
 		<input class="widefat" id="<?php echo $this->get_field_id( 'tumblr' ); ?>" name="<?php echo $this->get_field_name( 'tumblr' ); ?>" type="text" value="<?php echo $tumblr; ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'instagram' ); ?>"><?= $this->i('instagram', 16) ?> <?php _e( 'Instagram xxxxx', 'ts_social_links' ); ?>:</label>
+		<label for="<?php echo $this->get_field_id( 'instagram' ); ?>"><?= $this->i('instagram', 16) ?> <?php _e( 'Instagram account', 'ts_social_links' ); ?>:</label>
 		<input class="widefat" id="<?php echo $this->get_field_id( 'instagram' ); ?>" name="<?php echo $this->get_field_name( 'instagram' ); ?>" type="text" value="<?php echo $instagram; ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'github' ); ?>"><?= $this->i('github', 16) ?> <?php _e( 'Github xxxxx', 'ts_social_links' ); ?>:</label>
+		<label for="<?php echo $this->get_field_id( 'github' ); ?>"><?= $this->i('github', 16) ?> <?php _e( 'Github username', 'ts_social_links' ); ?>:</label>
 		<input class="widefat" id="<?php echo $this->get_field_id( 'github' ); ?>" name="<?php echo $this->get_field_name( 'github' ); ?>" type="text" value="<?php echo $github; ?>" />
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'rss' ); ?>"><?= $this->i('rss', 16) ?></label>
-		<label for="<?php echo $this->get_field_id( 'rss' ); ?>"><?php _e( 'Show RSS link', 'ts_social_links' ); ?>:</label>
 		<input id="<?php echo $this->get_field_id( 'rss' ); ?>" name="<?php echo $this->get_field_name( 'rss' ); ?>" type="checkbox" value="1" <?php echo ($rss) ? 'checked="checked"' : ''; ?> />
+		<label for="<?php echo $this->get_field_id( 'rss' ); ?>"><?php _e( 'Show RSS link', 'ts_social_links' ); ?> <?= $this->i('rss', 16) ?></label>
 		</p>
 
 		<?php
@@ -167,6 +179,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$instance =  $old_instance;
 		$instance['title'] = strip_tags( $new_instance['title'] );
 
+		$instance['use_fa'] = strip_tags( $new_instance['use_fa'] );
 		$instance['size'] = strip_tags( $new_instance['size'] );
 		$instance['style'] = strip_tags( $new_instance['style'] );
 		$instance['youtube'] = strip_tags( $new_instance['youtube'] );
@@ -189,6 +202,12 @@ class TS_Social_Links_Widget extends WP_Widget {
 
 		echo @$before_widget;
 		$title = empty($instance['title']) ? '' : apply_filters('widget_title', $instance['title']);
+		$use_fa = empty($instance['use_fa']) ? false : (bool) $instance['use_fa'];
+		if ($use_fa)
+			$use_fa = wp_style_is('font-awesome', 'registered');
+		if ($use_fa && !wp_style_is('font-awesome', 'enqueued'))
+			wp_enqueue_style('font-awesome');
+
 		$size = empty($instance['size']) ? 16 : intval( $instance['size'] );
 		$style = empty($instance['style']) ? '' : $instance['style'];
 
@@ -210,34 +229,34 @@ class TS_Social_Links_Widget extends WP_Widget {
 		?><div class="social-links"><?php
 
 		if (!empty($youtube))
-			self::l('http://youtube.com/user/' . $youtube, 'youtube', $size, $style);
+			self::l('http://youtube.com/user/' . $youtube, 'youtube', $size, $style, $use_fa);
 
 		if (!empty($facebook))
-			self::l('http://facebook.com/' . $facebook, 'facebook', $size, $style);
+			self::l('http://facebook.com/' . $facebook, 'facebook', $size, $style, $use_fa);
 
 		if (!empty($twitter))
-			self::l('http://twitter.com/#!/' . $twitter, 'twitter', $size, $style);
+			self::l('http://twitter.com/#!/' . $twitter, 'twitter', $size, $style, $use_fa);
 
 		if (!empty($linkedin))
-			self::l('http://linkedin.com/' . $linkedwhat . '/' . $linkedin, 'linkedin', $size, $style);
+			self::l('http://linkedin.com/' . $linkedwhat . '/' . $linkedin, 'linkedin', $size, $style, $use_fa);
 
 		if (!empty($pinterest))
-			self::l('http://pinterest.com/' . $pinterest, 'pinterest', $size, $style);
+			self::l('http://pinterest.com/' . $pinterest, 'pinterest', $size, $style, $use_fa);
 
 		if (!empty($google_plus))
-			self::l('http://plus.google.com/' . $google_plus , 'google-plus', $size, $style);
+			self::l('http://plus.google.com/' . $google_plus , 'google-plus', $size, $style, $use_fa);
 
 		if (!empty($tumblr))
-			self::l('http://' . $tumblr . '.tumblr.com/', 'tumblr', $size, $style);
+			self::l('http://' . $tumblr . '.tumblr.com/', 'tumblr', $size, $style, $use_fa);
 
 		if (!empty($instagram))
-			self::l('http://instagram.com/' .  $instagram, 'instagram', $size, $style);
+			self::l('http://instagram.com/' .  $instagram, 'instagram', $size, $style, $use_fa);
 
 		if (!empty($github))
-			self::l('http://github.com/' . $github, 'github', $size, $style);
+			self::l('http://github.com/' . $github, 'github', $size, $style, $use_fa);
 
 		if ($rss)
-			self::l(get_bloginfo('rss2_url'), 'rss', $size, $style, 'application/rss+xml');
+			self::l(get_bloginfo('rss2_url'), 'rss', $size, $style, $use_fa, 'application/rss+xml');
 
 		?></div><?php
 
