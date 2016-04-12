@@ -1,58 +1,121 @@
+/**!
+ * http://gothub.com/vinorodrigues/wp-ts-socical-links
+ */
+
 @import "compass/css3";
 @import "compass/utilities";
+@import "variables";
+@import "buttons";
 
-img.sl-16 {
-	width: 16px;
-	height: 16px;
-}
-
-img.sl-24 {
-	width: 24px;
-	height: 24px;
-}
-
-img.sl-32 {
-	width: 32px;
-	height: 32px;
-}
-
-img.sl-48 {
-	width: 48px;
-	height: 48px;
-}
-
-img.sl-rounded {
-	@include border-radius(0.3rem);
-}
-
-img.sl-circle {
-	@include border-radius(50%);
+fieldset.social-links {
+	img {
+		vertical-align: middle;
+		display: inline-block;
+		margin-bottom: 0.2em !important;
+	}
 }
 
 .social-links {
-	.sla-16 { margin-right: 0.33rem; }
-	.sla-24 { margin-right: 0.495rem; }
-	.sla-32 { margin-right: 0.66rem; }
-	.sla-48 { margin-right: 0.99rem; }
+	// line-height: 1;
 
-	[class^="sla-"]:last-child { margin-right: 0; }
+	img {
+		border: 0;
+		margin: 0;
+		padding: 0;
+	}
+
+	&.sl-c-16 a { margin-bottom: ($sl-16-s/2); }
+	&.sl-c-24 a { margin-bottom: ($sl-24-s/2); }
+	&.sl-c-32 a { margin-bottom: ($sl-32-s/2); }
+	&.sl-c-48 a { margin-bottom: ($sl-48-s/2); }
+
+	&.sl-c-16 a:not(:last-child) { margin-right: $sl-16-s; }
+	&.sl-c-24 a:not(:last-child) { margin-right: $sl-24-s; }
+	&.sl-c-32 a:not(:last-child) { margin-right: $sl-32-s; }
+	&.sl-c-48 a:not(:last-child) { margin-right: $sl-48-s; }
+
+	.sl-16 {
+		height: $sl-16;
+		min-width: $sl-16;
+	}
+
+	.sl-24 {
+		height: $sl-24;
+		min-width: $sl-24;
+	}
+
+	.sl-32 {
+		height: $sl-32;
+		min-width: $sl-32;
+	}
+
+	.sl-48 {
+		height: $sl-48;
+		min-width: $sl-48;
+	}
+
+	.sl-rounded.sl-16 { @include border-radius($sl-16-s - 2px); }
+	.sl-rounded.sl-24 { @include border-radius($sl-24-s - 2px); }
+	.sl-rounded.sl-32 { @include border-radius($sl-32-s - 2px); }
+	.sl-rounded.sl-48 { @include border-radius($sl-48-s - 2px); }
+
+	.sl-circle {
+		@include border-radius(50%);
+	}
 }
 
-/* Font-Awesome */
+/**
+ * Font-Awesome
+ */
+
+@mixin btn-social($color-bg, $color: #fff) {
+	background-color: $color-bg;
+	@include button-variant($color, $color-bg, rgba(0,0,0,.2));
+}
 
 .social-links {
-	i.sl-fa-24 { font-size: 1.5em; }
-	i.sl-fa-32 { font-size: 2em; }
-	i.sl-fa-48 { font-size: 3em; }
+	.btn {
+		// reset buttons
+		display: inline-block;
+		font-weight: normal;
+		line-height: 1;
+		text-align: center;
+		white-space: nowrap;
+		vertical-align: initial;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		color: inherit;
+		background-color: transparent;
+		// @include border-radius(0);
+	}
 
-	i.fa-youtube,     i.fa-youtube-square     { color: #EB402F; }
-	i.fa-facebook,    i.fa-facebook-square    { color: #275290; }
-	i.fa-twitter,     i.fa-twitter-square     { color: #2DA6ED; }
-	i.fa-linkedin,    i.fa-linkedin-square    { color: #005C94; }
-	i.fa-pinterest,   i.fa-pinterest-square   { color: #CD1B13; }
-	i.fa-google-plus, i.fa-google-plus-square { color: #DE3F2B; }
-	i.fa-tumblr,      i.fa-tumblr-square      { color: #2C506C; }
-	i.fa-instagram                            { color: #275C85; }
-	i.fa-github,      i.fa-github-square      { color: #010101; }
-	i.fa-rss,         i.fa-rss-square         { color: #FF6F00; }
+	a.btn {
+		border: 1px solid rgba(127,127,127,0.25);
+
+		&.sl-16 { font-size: $sl-16 - $sl-16-s; padding: (($sl-16-s/2)-1px) 0; }  // -1px for the border
+		&.sl-24 { font-size: $sl-24 - $sl-24-s; padding: (($sl-24-s/2)-1px) 0; }
+		&.sl-32 { font-size: $sl-32 - $sl-32-s; padding: (($sl-32-s/2)-1px) 0; }
+		&.sl-48 { font-size: $sl-48 - $sl-48-s; padding: (($sl-48-s/2)-1px) 0; }
+	}
+
+	.btn-youtube     { @include btn-social(#eb402f); }
+	.btn-facebook    { @include btn-social(#275290); }
+	.btn-twitter     { @include btn-social(#55acee); }  // #2da6ed
+	.btn-linkedin    { @include btn-social(#007bb6); }  // #005c94
+	.btn-pinterest   { @include btn-social(#cb2027); }  // #cd1b13
+	.btn-google-plus { @include btn-social(#de3f2b); }
+	.btn-tumblr      { @include btn-social(#446378); }
+	.btn-instagram   { @include btn-social(#38668a, #e0e8ef); }  // #275c85
+	.btn-github      { @include btn-social(#444444); }
+	.btn-email       { @include btn-social(#f89a1e); }
+	.btn-rss         { @include btn-social(#ff6f00); }
+
+	//.fa-google-plus,
+	//.fa-envelope-o {  }
 }
