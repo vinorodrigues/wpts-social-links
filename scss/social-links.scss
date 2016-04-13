@@ -7,6 +7,8 @@
 @import "variables";
 @import "buttons";
 
+//* scss-compile-options: --precision 3
+
 fieldset.social-links {
 	img {
 		vertical-align: middle;
@@ -24,15 +26,15 @@ fieldset.social-links {
 		padding: 0;
 	}
 
-	&.sl-c-16 a { margin-bottom: ($sl-16-s/2); }
-	&.sl-c-24 a { margin-bottom: ($sl-24-s/2); }
-	&.sl-c-32 a { margin-bottom: ($sl-32-s/2); }
-	&.sl-c-48 a { margin-bottom: ($sl-48-s/2); }
+	&.sl-c-16 a { margin-bottom: round($sl-16 / 6); }
+	&.sl-c-24 a { margin-bottom: round($sl-24 / 6); }
+	&.sl-c-32 a { margin-bottom: round($sl-32 / 6); }
+	&.sl-c-48 a { margin-bottom: round($sl-48 / 6); }
 
-	&.sl-c-16 a:not(:last-child) { margin-right: $sl-16-s; }
-	&.sl-c-24 a:not(:last-child) { margin-right: $sl-24-s; }
-	&.sl-c-32 a:not(:last-child) { margin-right: $sl-32-s; }
-	&.sl-c-48 a:not(:last-child) { margin-right: $sl-48-s; }
+	&.sl-c-16 a:not(:last-child) { margin-right: round($sl-16 / 6); }
+	&.sl-c-24 a:not(:last-child) { margin-right: round($sl-24 / 6); }
+	&.sl-c-32 a:not(:last-child) { margin-right: round($sl-32 / 6); }
+	&.sl-c-48 a:not(:last-child) { margin-right: round($sl-48 / 6); }
 
 	.sl-16 {
 		height: $sl-16;
@@ -54,10 +56,10 @@ fieldset.social-links {
 		min-width: $sl-48;
 	}
 
-	.sl-rounded.sl-16 { @include border-radius($sl-16-s - 2px); }
-	.sl-rounded.sl-24 { @include border-radius($sl-24-s - 2px); }
-	.sl-rounded.sl-32 { @include border-radius($sl-32-s - 2px); }
-	.sl-rounded.sl-48 { @include border-radius($sl-48-s - 2px); }
+	.sl-rounded.sl-16 { @include border-radius( round($sl-16 / 6) ); }
+	.sl-rounded.sl-24 { @include border-radius( round($sl-24 / 6) ); }
+	.sl-rounded.sl-32 { @include border-radius( round($sl-32 / 6) ); }
+	.sl-rounded.sl-48 { @include border-radius( round($sl-48 / 6) ); }
 
 	.sl-circle {
 		@include border-radius(50%);
@@ -70,7 +72,7 @@ fieldset.social-links {
 
 @mixin btn-social($color-bg, $color: #fff) {
 	background-color: $color-bg;
-	@include button-variant($color, $color-bg, rgba(0,0,0,.2));
+	@include button-variant($color, $color-bg, rgba(0,0,0,0.2));
 }
 
 .social-links {
@@ -92,16 +94,37 @@ fieldset.social-links {
 		margin: 0;
 		color: inherit;
 		background-color: transparent;
-		// @include border-radius(0);
-	}
-
-	a.btn {
+		@include border-radius(0);
 		border: 1px solid rgba(127,127,127,0.25);
 
-		&.sl-16 { font-size: $sl-16 - $sl-16-s; padding: (($sl-16-s/2)-1px) 0; }  // -1px for the border
-		&.sl-24 { font-size: $sl-24 - $sl-24-s; padding: (($sl-24-s/2)-1px) 0; }
-		&.sl-32 { font-size: $sl-32 - $sl-32-s; padding: (($sl-32-s/2)-1px) 0; }
-		&.sl-48 { font-size: $sl-48 - $sl-48-s; padding: (($sl-48-s/2)-1px) 0; }
+		&.sl-16 {
+			font-size: round($sl-16 - ($sl-16-p * 2) - 2px);
+			line-height: round($sl-16 - ($sl-16-p * 2) - 2px);
+			padding: $sl-16-p round($sl-16-p/2);
+			width: $sl-16;
+			height: $sl-16;
+		}
+		&.sl-24 {
+			font-size: round($sl-24 - ($sl-24-p * 2) - 2px);
+			line-height: round($sl-24 - ($sl-24-p * 2) - 2px);
+			padding: $sl-24-p round($sl-24-p/2);
+			width: $sl-24;
+			height: $sl-24;
+		}
+		&.sl-32 {
+			font-size: round($sl-32 - ($sl-32-p * 2) - 2px);
+			line-height: round($sl-32 - ($sl-32-p * 2) - 2px);
+			padding: $sl-32-p round($sl-32-p/2);
+			width: $sl-32;
+			height: $sl-32;
+		}
+		&.sl-48 {
+			font-size: round($sl-48 - ($sl-48-p * 2) - 2px);
+			line-height: round($sl-48 - ($sl-48-p * 2) - 2px);
+			padding: $sl-48-p round($sl-48-p/2);
+			width: $sl-48;
+			height: $sl-48;
+		}
 	}
 
 	.btn-youtube     { @include btn-social(#eb402f); }
@@ -115,7 +138,4 @@ fieldset.social-links {
 	.btn-github      { @include btn-social(#444444); }
 	.btn-email       { @include btn-social(#f89a1e); }
 	.btn-rss         { @include btn-social(#ff6f00); }
-
-	//.fa-google-plus,
-	//.fa-envelope-o {  }
 }
