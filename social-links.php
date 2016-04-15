@@ -21,6 +21,9 @@ if (!defined('SOCIAL_LINKS_URL'))
  */
 class TS_Social_Links_Widget extends WP_Widget {
 
+	private $_supports_email_tested = false;
+	private $_supports_email = false;
+
 	/** Register widget with WordPress. */
 	public function __construct() {
 		parent::__construct(
@@ -49,9 +52,6 @@ class TS_Social_Links_Widget extends WP_Widget {
 
 	public static function l($url, $what, $size = 16, $shape = '', $use_fa = false, $type = false, $rel = false) {
 
-		// TODO REMOVE RAND
-		// if (rand(1,2) != 1) $use_fa = !$use_fa;
-
 		$o = '<a href="'. $url . '" class="';
 		if ($use_fa) {
 			$o .= 'btn btn-social';
@@ -74,6 +74,30 @@ class TS_Social_Links_Widget extends WP_Widget {
 		}
 		$o .= '</a>';
 		echo $o;
+	}
+
+	public function supports_email() {
+		if (!$this->_supports_email_tested) {
+			$this->_supports_email_tested = true;
+			$this->_supports_email = function_exists('ts_obfuscate_email');
+		}
+		return $this->_supports_email;
+	}
+
+	public static function e($to, $size, $shape, $use_fa) {
+		$n = $use_fa ? self::f('email', $size, $shape) : self::i('email', $size, $shape);
+		$c = '';
+		if ($use_fa) {
+			$c .= 'btn btn-social';
+			$c .= ' btn-email';
+			$c .= ' sl-' . (($shape == '') ? 'square' : $shape);
+			$c .= ' sl-' . $size;
+		} else {
+			$c .= 'sl-img ';
+		}
+		$c .= ' sl-email';
+
+		echo ts_obfuscate_email($to, $n, $c, 'nofollow');
 	}
 
 	function form($instance) {
@@ -110,7 +134,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$tumblr = esc_attr($instance['tumblr']);
 		$instagram = esc_attr($instance['instagram']);
 		$github = esc_attr($instance['github']);
-		$email = esc_attr($instance['email']);
+		if ($this->supports_email()) $email = esc_attr($instance['email']);
 		$rss = (bool) esc_attr($instance['rss']);
 		?>
 
@@ -196,11 +220,13 @@ class TS_Social_Links_Widget extends WP_Widget {
 		<input class="widefat" id="<?php echo $this->get_field_id( 'github' ); ?>" name="<?php echo $this->get_field_name( 'github' ); ?>" type="text" value="<?php echo $github; ?>" />
 		</p>
 
+		<?php if ($this->supports_email()) : ?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'email' ); ?>"><?= $this->i('email', 16) ?> <?php _e( 'Email link', 'ts_social_links' ); ?>:</label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'email' ); ?>" name="<?php echo $this->get_field_name( 'email' ); ?>" type="text" value="<?php echo $email; ?>" placeholder="mailto:user@domain.com" />
-		<small><?php _e('Use a fully qualified URL here.  May be a "mailto:" link or a URL to an external form.', 'ts_social_links' ); ?></small>
+		<label for="<?php echo $this->get_field_id( 'email' ); ?>"><?= $this->i('email', 16) ?> <?php _e( 'Email address', 'ts_social_links' ); ?>:</label>
+		<input class="widefat" id="<?php echo $this->get_field_id( 'email' ); ?>" name="<?php echo $this->get_field_name( 'email' ); ?>" type="text" value="<?php echo $email; ?>" placeholder="user@domain.com" />
+		<small><?php _e('Use only the <code>to</code> email address here.', 'ts_social_links' ); ?></small>
 		</p>
+		<?php endif; ?>
 
 		<p>
 		<input id="<?php echo $this->get_field_id( 'rss' ); ?>" name="<?php echo $this->get_field_name( 'rss' ); ?>" type="checkbox" value="1" <?php echo ($rss) ? 'checked="checked"' : ''; ?> />
@@ -229,7 +255,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$instance['tumblr'] = strip_tags( $new_instance['tumblr'] );
 		$instance['instagram'] = strip_tags( $new_instance['instagram'] );
 		$instance['github'] = strip_tags( $new_instance['github'] );
-		$instance['email'] = strip_tags( $new_instance['email'] );
+		if ($this->supports_email()) $instance['email'] = strip_tags( $new_instance['email'] );
 		$instance['rss'] = strip_tags( $new_instance['rss'] );
 
 		return $instance;
@@ -259,7 +285,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$tumblr = empty($instance['tumblr']) ? '' : $instance['tumblr'];
 		$instagram = empty($instance['instagram']) ? '' : $instance['instagram'];
 		$github = empty($instance['github']) ? '' : $instance['github'];
-		$email = empty($instance['email']) ? '' : $instance['email'];
+		if ($this->supports_email()) $email = empty($instance['email']) ? '' : $instance['email'];
 		$rss = empty($instance['rss']) ? false : (bool) $instance['rss'];
 
 		if (!empty($title))
@@ -294,8 +320,8 @@ class TS_Social_Links_Widget extends WP_Widget {
 		if (!empty($github))
 			self::l('http://github.com/' . $github, 'github', $size, $shape, $use_fa);
 
-		if (!empty($email))
-			self::l($email, 'email', $size, $shape, $use_fa, false, 'nofollow');
+		if ($this->supports_email() && !empty($email))
+			self::e($email, $size, $shape, $use_fa);
 
 		if ($rss)
 			self::l(get_bloginfo('rss2_url'), 'rss', $size, $shape, $use_fa, 'application/rss+xml');
