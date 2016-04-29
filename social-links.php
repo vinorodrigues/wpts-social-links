@@ -4,7 +4,7 @@
  * Plugin URI: http://tecsmith.com.au
  * Description: List your social links
  * Author: Vino Rodrigues
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author URI: http://vinorodrigues.com
  *
  * @author Vino Rodrigues
@@ -44,6 +44,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 
 	public static function f($what, $size = 16, $shape = '') {
 		if ($what == 'email') $what = 'envelope-o';
+		if ($what == 'blog') $what = 'comment';
 		$o = '<i class="fa fa-' . $what;
 		// if ($what != 'instagram') $o .= '-square';
 		$o .= '"></i>';
@@ -117,6 +118,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 			'instagram' => '',
 			'github' => '',
 			'email' => '',
+			'blog' => '',
 			'rss' => true,
 			) );
 
@@ -135,6 +137,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$instagram = esc_attr($instance['instagram']);
 		$github = esc_attr($instance['github']);
 		if ($this->supports_email()) $email = esc_attr($instance['email']);
+		$blog = esc_attr($instance['blog']);
 		$rss = (bool) esc_attr($instance['rss']);
 		?>
 
@@ -223,10 +226,16 @@ class TS_Social_Links_Widget extends WP_Widget {
 		<?php if ($this->supports_email()) : ?>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'email' ); ?>"><?= $this->i('email', 16) ?> <?php _e( 'Email address', 'ts_social_links' ); ?>:</label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'email' ); ?>" name="<?php echo $this->get_field_name( 'email' ); ?>" type="text" value="<?php echo $email; ?>" placeholder="user@domain.com" />
-		<small><?php _e('Use only the <code>to</code> email address here.', 'ts_social_links' ); ?></small>
+		<input class="widefat" id="<?php echo $this->get_field_id( 'email' ); ?>" name="<?php echo $this->get_field_name( 'email' ); ?>" type="email" value="<?php echo $email; ?>" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
+		<small><?php _e('Use only the a valid email address here, e.g. <code>you@domainname.com</code>', 'ts_social_links' ); ?></small>
 		</p>
 		<?php endif; ?>
+
+		<p>
+		<label for="<?php echo $this->get_field_id( 'blog' ); ?>"><?= $this->i('blog', 16) ?> <?php _e( 'Blog URL', 'ts_social_links' ); ?>:</label>
+		<input class="widefat" id="<?php echo $this->get_field_id( 'blog' ); ?>" name="<?php echo $this->get_field_name( 'blog' ); ?>" type="url" value="<?php echo $blog; ?>" pattern="https?://.+" />
+		<small><?php _e('Use a valid full URL here, e.g. <code>https://blog.domainname.com</code>', 'ts_social_links' ); ?></small>
+		</p>
 
 		<p>
 		<input id="<?php echo $this->get_field_id( 'rss' ); ?>" name="<?php echo $this->get_field_name( 'rss' ); ?>" type="checkbox" value="1" <?php echo ($rss) ? 'checked="checked"' : ''; ?> />
@@ -256,6 +265,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$instance['instagram'] = strip_tags( $new_instance['instagram'] );
 		$instance['github'] = strip_tags( $new_instance['github'] );
 		if ($this->supports_email()) $instance['email'] = strip_tags( $new_instance['email'] );
+		$instance['blog'] = strip_tags( $new_instance['blog'] );
 		$instance['rss'] = strip_tags( $new_instance['rss'] );
 
 		return $instance;
@@ -286,6 +296,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$instagram = empty($instance['instagram']) ? '' : $instance['instagram'];
 		$github = empty($instance['github']) ? '' : $instance['github'];
 		if ($this->supports_email()) $email = empty($instance['email']) ? '' : $instance['email'];
+		$blog = empty($instance['blog']) ? '' : $instance['blog'];
 		$rss = empty($instance['rss']) ? false : (bool) $instance['rss'];
 
 		if (!empty($title))
@@ -322,6 +333,9 @@ class TS_Social_Links_Widget extends WP_Widget {
 
 		if ($this->supports_email() && !empty($email))
 			self::e($email, $size, $shape, $use_fa);
+
+		if (!empty($blog))
+			self::l($blog, 'blog', $size, $shape, $use_fa);
 
 		if ($rss)
 			self::l(get_bloginfo('rss2_url'), 'rss', $size, $shape, $use_fa, 'application/rss+xml');
