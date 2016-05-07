@@ -56,13 +56,25 @@ fieldset.social-links {
 		min-width: $sl-48;
 	}
 
-	.sl-rounded.sl-16 { @include border-radius( round($sl-16 / 6) ); }
-	.sl-rounded.sl-24 { @include border-radius( round($sl-24 / 6) ); }
-	.sl-rounded.sl-32 { @include border-radius( round($sl-32 / 6) ); }
-	.sl-rounded.sl-48 { @include border-radius( round($sl-48 / 6) ); }
+	a.sl-rounded.sl-16 { @include border-radius( round($sl-16 / 6) ); }
+	a.sl-rounded.sl-24 { @include border-radius( round($sl-24 / 6) ); }
+	a.sl-rounded.sl-32 { @include border-radius( round($sl-32 / 6) ); }
+	a.sl-rounded.sl-48 { @include border-radius( round($sl-48 / 6) ); }
 
-	.sl-circle {
+	a.sl-circle {
 		@include border-radius(50%);
+	}
+
+	a.sl-mono {
+		color: inherit !important;
+		background-color: inherit !important;
+		border-color: transparent !important;
+	}
+
+	img.sl-mono {
+		-webkit-filter: grayscale(1) !important;
+		filter: gray;
+		filter: grayscale(1)  !important;
 	}
 }
 
@@ -138,5 +150,6 @@ fieldset.social-links {
 	.btn-github      { @include btn-social(#444444); }
 	.btn-email       { @include btn-social(#52bcd6); }
 	.btn-blog        { @include btn-social(#0c80b1); }
+	.btn-link        { @include btn-social(#54be93); }
 	.btn-rss         { @include btn-social(#ff6f00); }
 }

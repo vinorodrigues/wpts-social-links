@@ -4,7 +4,7 @@
  * Plugin URI: http://tecsmith.com.au
  * Description: List your social links
  * Author: Vino Rodrigues
- * Version: 1.1.2
+ * Version: 1.1.3
  * Author URI: http://vinorodrigues.com
  *
  * @author Vino Rodrigues
@@ -15,6 +15,7 @@
 
 if (!defined('SOCIAL_LINKS_URL'))
 	define( 'SOCIAL_LINKS_URL', str_replace( ' ', '%20', plugins_url( '', __FILE__ ) ) );
+
 
 /**
  * Adds Social_Widget widget
@@ -43,8 +44,10 @@ class TS_Social_Links_Widget extends WP_Widget {
 	}
 
 	public static function f($what, $size = 16, $shape = '') {
-		if ($what == 'email') $what = 'envelope-o';
-		if ($what == 'blog') $what = 'comment';
+		switch ($what) {
+			case 'email': $what = 'envelope-o'; break;
+			case 'blog': $what = 'comment'; break;
+		}
 		$o = '<i class="fa fa-' . $what;
 		// if ($what != 'instagram') $o .= '-square';
 		$o .= '"></i>';
@@ -119,6 +122,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 			'github' => '',
 			'email' => '',
 			'blog' => '',
+			'link' => '',
 			'rss' => true,
 			) );
 
@@ -138,6 +142,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$github = esc_attr($instance['github']);
 		if ($this->supports_email()) $email = esc_attr($instance['email']);
 		$blog = esc_attr($instance['blog']);
+		$link = esc_attr($instance['link']);
 		$rss = (bool) esc_attr($instance['rss']);
 		?>
 
@@ -167,6 +172,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 			<option <?php if ($shape == '') { echo 'selected="selected" '; } ?> value=""><?php _e( 'Square', 'ts_social_links' ); ?></option>
 			<option <?php if ($shape == 'rounded') { echo 'selected="selected" '; } ?> value="rounded"><?php _e( 'Rounded', 'ts_social_links' ); ?></option>
 			<option <?php if ($shape == 'circle') { echo 'selected="selected" '; } ?> value="circle"><?php _e( 'Circle', 'ts_social_links' ); ?></option>
+			<option <?php if ($shape == 'mono') { echo 'selected="selected" '; } ?> value="mono"><?php _e( 'Monochrome', 'ts_social_links' ); ?></option>
 		</select>
 		</p>
 
@@ -238,6 +244,12 @@ class TS_Social_Links_Widget extends WP_Widget {
 		</p>
 
 		<p>
+		<label for="<?php echo $this->get_field_id( 'link' ); ?>"><?= $this->i('link', 16) ?> <?php _e( 'General URL', 'ts_social_links' ); ?>:</label>
+		<input class="widefat" id="<?php echo $this->get_field_id( 'link' ); ?>" name="<?php echo $this->get_field_name( 'link' ); ?>" type="url" value="<?php echo $link; ?>" pattern="https?://.+" />
+		<small><?php _e('Use a valid full URL here, e.g. <code>https://domainname.com</code>', 'ts_social_links' ); ?></small>
+		</p>
+
+		<p>
 		<input id="<?php echo $this->get_field_id( 'rss' ); ?>" name="<?php echo $this->get_field_name( 'rss' ); ?>" type="checkbox" value="1" <?php echo ($rss) ? 'checked="checked"' : ''; ?> />
 		<label for="<?php echo $this->get_field_id( 'rss' ); ?>"><?php printf( __( 'Show %s RSS link', 'ts_social_links' ), $this->i('rss', 16) ); ?></label>
 		</p>
@@ -266,6 +278,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$instance['github'] = strip_tags( $new_instance['github'] );
 		if ($this->supports_email()) $instance['email'] = strip_tags( $new_instance['email'] );
 		$instance['blog'] = strip_tags( $new_instance['blog'] );
+		$instance['link'] = strip_tags( $new_instance['link'] );
 		$instance['rss'] = strip_tags( $new_instance['rss'] );
 
 		return $instance;
@@ -297,6 +310,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$github = empty($instance['github']) ? '' : $instance['github'];
 		if ($this->supports_email()) $email = empty($instance['email']) ? '' : $instance['email'];
 		$blog = empty($instance['blog']) ? '' : $instance['blog'];
+		$link = empty($instance['link']) ? '' : $instance['link'];
 		$rss = empty($instance['rss']) ? false : (bool) $instance['rss'];
 
 		if (!empty($title))
@@ -337,6 +351,9 @@ class TS_Social_Links_Widget extends WP_Widget {
 		if (!empty($blog))
 			self::l($blog, 'blog', $size, $shape, $use_fa);
 
+		if (!empty($link))
+			self::l($link, 'link', $size, $shape, $use_fa);
+
 		if ($rss)
 			self::l(get_bloginfo('rss2_url'), 'rss', $size, $shape, $use_fa, 'application/rss+xml');
 
@@ -368,3 +385,10 @@ function ts_social_links_wp_head() {
 endif;
 add_action( 'wp_enqueue_scripts', 'ts_social_links_wp_head' );
 add_action( 'admin_enqueue_scripts', 'ts_social_links_wp_head' );
+
+
+function ts_social_links_admin_menu() {
+	if ( function_exists('add_tecsmith_item') )
+		add_tecsmith_item( __('TS Social Links Widget', 'ts_social_links'), basename(__FILE__, '.php') );
+}
+add_action( 'admin_menu', 'ts_social_links_admin_menu' );
