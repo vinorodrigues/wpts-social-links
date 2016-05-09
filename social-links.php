@@ -4,7 +4,7 @@
  * Plugin URI: http://tecsmith.com.au
  * Description: List your social links
  * Author: Vino Rodrigues
- * Version: 1.1.3
+ * Version: 1.1.4
  * Author URI: http://vinorodrigues.com
  *
  * @author Vino Rodrigues
@@ -54,7 +54,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		return $o;
 	}
 
-	public static function l($url, $what, $size = 16, $shape = '', $use_fa = false, $type = false, $rel = false) {
+	public static function l($url, $what, $title = '', $size = 16, $shape = '', $use_fa = false, $type = false, $rel = false) {
 
 		$o = '<a href="'. $url . '" class="';
 		if ($use_fa) {
@@ -69,6 +69,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 
 		if ($type) $o .= ' type="' . $type . '"';  // application/rss+xml
 		if ($rel) $o .= ' rel="' . $rel . '"';  // nofollow
+		if (!empty($title)) $o .= ' title="' . $title . '"';
 		$o .= '>';
 
 		if ($use_fa) {
@@ -173,7 +174,9 @@ class TS_Social_Links_Widget extends WP_Widget {
 			<option <?php if ($shape == 'rounded') { echo 'selected="selected" '; } ?> value="rounded"><?php _e( 'Rounded', 'ts_social_links' ); ?></option>
 			<option <?php if ($shape == 'circle') { echo 'selected="selected" '; } ?> value="circle"><?php _e( 'Circle', 'ts_social_links' ); ?></option>
 			<option <?php if ($shape == 'mono') { echo 'selected="selected" '; } ?> value="mono"><?php _e( 'Monochrome', 'ts_social_links' ); ?></option>
+			<option <?php if ($shape == 'color') { echo 'selected="selected" '; } ?> value="color"><?php _e( 'Font color*', 'ts_social_links' ); ?></option>
 		</select>
+		<small><br /><?php _e('* = Font color only works with Font-Awsome icons', 'ts_social_links' ); ?></small>
 		</p>
 
 		<fieldset class="social-links">
@@ -319,43 +322,43 @@ class TS_Social_Links_Widget extends WP_Widget {
 		?><div class="social-links <?= 'sl-c-'.$size ?>"><?php
 
 		if (!empty($youtube))
-			self::l('http://youtube.com/user/' . $youtube, 'youtube', $size, $shape, $use_fa);
+			self::l('http://youtube.com/user/' . $youtube, 'youtube', __('YouTube'), $size, $shape, $use_fa);
 
 		if (!empty($facebook))
-			self::l('http://facebook.com/' . $facebook, 'facebook', $size, $shape, $use_fa);
+			self::l('http://facebook.com/' . $facebook, 'facebook', __('Facebook'), $size, $shape, $use_fa);
 
 		if (!empty($twitter))
-			self::l('http://twitter.com/#!/' . $twitter, 'twitter', $size, $shape, $use_fa);
+			self::l('http://twitter.com/#!/' . $twitter, 'twitter', __('Twitter'), $size, $shape, $use_fa);
 
 		if (!empty($linkedin))
-			self::l('http://linkedin.com/' . $linkedwhat . '/' . $linkedin, 'linkedin', $size, $shape, $use_fa);
+			self::l('http://linkedin.com/' . $linkedwhat . '/' . $linkedin, 'linkedin', __('LinkeIn'), $size, $shape, $use_fa);
 
 		if (!empty($pinterest))
-			self::l('http://pinterest.com/' . $pinterest, 'pinterest', $size, $shape, $use_fa);
+			self::l('http://pinterest.com/' . $pinterest, 'pinterest', __('Pinterest'), $size, $shape, $use_fa);
 
 		if (!empty($google_plus))
-			self::l('http://plus.google.com/' . $google_plus , 'google-plus', $size, $shape, $use_fa);
+			self::l('http://plus.google.com/' . $google_plus , 'google-plus', __('Google+'), $size, $shape, $use_fa);
 
 		if (!empty($tumblr))
-			self::l('http://' . $tumblr . '.tumblr.com/', 'tumblr', $size, $shape, $use_fa);
+			self::l('http://' . $tumblr . '.tumblr.com/', 'tumblr', __('Tumblr'), $size, $shape, $use_fa);
 
 		if (!empty($instagram))
-			self::l('http://instagram.com/' .  $instagram, 'instagram', $size, $shape, $use_fa);
+			self::l('http://instagram.com/' .  $instagram, 'instagram', __('Instagram'), $size, $shape, $use_fa);
 
 		if (!empty($github))
-			self::l('http://github.com/' . $github, 'github', $size, $shape, $use_fa);
+			self::l('http://github.com/' . $github, 'github', __('Github'), $size, $shape, $use_fa);
 
 		if ($this->supports_email() && !empty($email))
 			self::e($email, $size, $shape, $use_fa);
 
 		if (!empty($blog))
-			self::l($blog, 'blog', $size, $shape, $use_fa);
+			self::l($blog, 'blog', __('Blog'), $size, $shape, $use_fa);
 
 		if (!empty($link))
-			self::l($link, 'link', $size, $shape, $use_fa);
+			self::l($link, 'link', __('Visit'), $size, $shape, $use_fa);
 
 		if ($rss)
-			self::l(get_bloginfo('rss2_url'), 'rss', $size, $shape, $use_fa, 'application/rss+xml');
+			self::l(get_bloginfo('rss2_url'), 'rss', __('RSS Feed'), $size, $shape, $use_fa, 'application/rss+xml');
 
 		?></div><?php
 
