@@ -177,4 +177,13 @@ fieldset.social-links {
 		&.btn-link        { color: #54be93; }
 		&.btn-rss         { color: #ff6f00; }
 	}
+
+	a.sl-mono:hover,
+	a.sl-mono:focus,
+	a.sl-mono:active,
+	a.sl-color:hover,
+	a.sl-color:focus,
+	a.sl-color:active {
+		color: inherit !important;
+	}
 }

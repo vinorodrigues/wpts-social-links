@@ -47,9 +47,9 @@ class TS_Social_Links_Widget extends WP_Widget {
 		switch ($what) {
 			case 'email': $what = 'envelope-o'; break;
 			case 'blog': $what = 'comment'; break;
+			case 'github': $what = 'github-alt'; break;
 		}
 		$o = '<i class="fa fa-' . $what;
-		// if ($what != 'instagram') $o .= '-square';
 		$o .= '"></i>';
 		return $o;
 	}
@@ -123,7 +123,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 			'github' => '',
 			'email' => '',
 			'blog' => '',
-			'link' => '',
+			'home' => '',
 			'rss' => true,
 			) );
 
@@ -143,7 +143,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$github = esc_attr($instance['github']);
 		if ($this->supports_email()) $email = esc_attr($instance['email']);
 		$blog = esc_attr($instance['blog']);
-		$link = esc_attr($instance['link']);
+		$home = esc_attr($instance['home']);
 		$rss = (bool) esc_attr($instance['rss']);
 		?>
 
@@ -247,14 +247,14 @@ class TS_Social_Links_Widget extends WP_Widget {
 		</p>
 
 		<p>
-		<label for="<?php echo $this->get_field_id( 'link' ); ?>"><?= $this->i('link', 16) ?> <?php _e( 'General URL', 'ts_social_links' ); ?>:</label>
-		<input class="widefat" id="<?php echo $this->get_field_id( 'link' ); ?>" name="<?php echo $this->get_field_name( 'link' ); ?>" type="url" value="<?php echo $link; ?>" pattern="https?://.+" />
+		<label for="<?php echo $this->get_field_id( 'home' ); ?>"><?= $this->i('home', 16) ?> <?php _e( 'Home Page URL', 'ts_social_links' ); ?>:</label>
+		<input class="widefat" id="<?php echo $this->get_field_id( 'home' ); ?>" name="<?php echo $this->get_field_name( 'home' ); ?>" type="url" value="<?php echo $home; ?>" pattern="https?://.+" />
 		<small><?php _e('Use a valid full URL here, e.g. <code>https://domainname.com</code>', 'ts_social_links' ); ?></small>
 		</p>
 
 		<p>
 		<input id="<?php echo $this->get_field_id( 'rss' ); ?>" name="<?php echo $this->get_field_name( 'rss' ); ?>" type="checkbox" value="1" <?php echo ($rss) ? 'checked="checked"' : ''; ?> />
-		<label for="<?php echo $this->get_field_id( 'rss' ); ?>"><?php printf( __( 'Show %s RSS link', 'ts_social_links' ), $this->i('rss', 16) ); ?></label>
+		<label for="<?php echo $this->get_field_id( 'rss' ); ?>"><?php printf( __( 'Show %s RSS feed', 'ts_social_links' ), $this->i('rss', 16) ); ?></label>
 		</p>
 
 		</fieldset>
@@ -281,7 +281,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$instance['github'] = strip_tags( $new_instance['github'] );
 		if ($this->supports_email()) $instance['email'] = strip_tags( $new_instance['email'] );
 		$instance['blog'] = strip_tags( $new_instance['blog'] );
-		$instance['link'] = strip_tags( $new_instance['link'] );
+		$instance['home'] = strip_tags( $new_instance['home'] );
 		$instance['rss'] = strip_tags( $new_instance['rss'] );
 
 		return $instance;
@@ -313,7 +313,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 		$github = empty($instance['github']) ? '' : $instance['github'];
 		if ($this->supports_email()) $email = empty($instance['email']) ? '' : $instance['email'];
 		$blog = empty($instance['blog']) ? '' : $instance['blog'];
-		$link = empty($instance['link']) ? '' : $instance['link'];
+		$home = empty($instance['home']) ? '' : $instance['home'];
 		$rss = empty($instance['rss']) ? false : (bool) $instance['rss'];
 
 		if (!empty($title))
@@ -322,43 +322,43 @@ class TS_Social_Links_Widget extends WP_Widget {
 		?><div class="social-links <?= 'sl-c-'.$size ?>"><?php
 
 		if (!empty($youtube))
-			self::l('http://youtube.com/user/' . $youtube, 'youtube', __('YouTube'), $size, $shape, $use_fa);
+			self::l('http://youtube.com/user/' . $youtube, 'youtube', __('YouTube', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if (!empty($facebook))
-			self::l('http://facebook.com/' . $facebook, 'facebook', __('Facebook'), $size, $shape, $use_fa);
+			self::l('http://facebook.com/' . $facebook, 'facebook', __('Facebook', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if (!empty($twitter))
-			self::l('http://twitter.com/#!/' . $twitter, 'twitter', __('Twitter'), $size, $shape, $use_fa);
+			self::l('http://twitter.com/#!/' . $twitter, 'twitter', __('Twitter', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if (!empty($linkedin))
-			self::l('http://linkedin.com/' . $linkedwhat . '/' . $linkedin, 'linkedin', __('LinkeIn'), $size, $shape, $use_fa);
+			self::l('http://linkedin.com/' . $linkedwhat . '/' . $linkedin, 'linkedin', __('LinkeIn', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if (!empty($pinterest))
-			self::l('http://pinterest.com/' . $pinterest, 'pinterest', __('Pinterest'), $size, $shape, $use_fa);
+			self::l('http://pinterest.com/' . $pinterest, 'pinterest', __('Pinterest', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if (!empty($google_plus))
-			self::l('http://plus.google.com/' . $google_plus , 'google-plus', __('Google+'), $size, $shape, $use_fa);
+			self::l('http://plus.google.com/' . $google_plus , 'google-plus', __('Google+', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if (!empty($tumblr))
-			self::l('http://' . $tumblr . '.tumblr.com/', 'tumblr', __('Tumblr'), $size, $shape, $use_fa);
+			self::l('http://' . $tumblr . '.tumblr.com/', 'tumblr', __('Tumblr', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if (!empty($instagram))
-			self::l('http://instagram.com/' .  $instagram, 'instagram', __('Instagram'), $size, $shape, $use_fa);
+			self::l('http://instagram.com/' .  $instagram, 'instagram', __('Instagram', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if (!empty($github))
-			self::l('http://github.com/' . $github, 'github', __('Github'), $size, $shape, $use_fa);
+			self::l('http://github.com/' . $github, 'github', __('Github', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if ($this->supports_email() && !empty($email))
 			self::e($email, $size, $shape, $use_fa);
 
 		if (!empty($blog))
-			self::l($blog, 'blog', __('Blog'), $size, $shape, $use_fa);
+			self::l($blog, 'blog', __('Blog', 'ts_social_links'), $size, $shape, $use_fa);
 
-		if (!empty($link))
-			self::l($link, 'link', __('Visit'), $size, $shape, $use_fa);
+		if (!empty($home))
+			self::l($home, 'link', __('Home Page', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if ($rss)
-			self::l(get_bloginfo('rss2_url'), 'rss', __('RSS Feed'), $size, $shape, $use_fa, 'application/rss+xml');
+			self::l(get_bloginfo('rss2_url'), 'rss', __('RSS Feed', 'ts_social_links'), $size, $shape, $use_fa, 'application/rss+xml');
 
 		?></div><?php
 
