@@ -35,6 +35,9 @@ class TS_Social_Links_Widget extends WP_Widget {
 	}
 
 	public static function i($what, $size = 16, $shape = '') {
+		switch ($what) {
+			case 'home': $what = 'link'; break;
+		}
 		$o = '<img src="' . SOCIAL_LINKS_URL . '/img/' . ($size * 2) .
 			'/' . $what . '.png" class="sl-' . $what;
 		$o .= ' sl-' . (($shape == '') ? 'square' : $shape);
@@ -48,6 +51,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 			case 'email': $what = 'envelope-o'; break;
 			case 'blog': $what = 'comment'; break;
 			case 'github': $what = 'github-alt'; break;
+			case 'home': $what = 'link'; break;
 		}
 		$o = '<i class="fa fa-' . $what;
 		$o .= '"></i>';
