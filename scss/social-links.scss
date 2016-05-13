@@ -61,12 +61,12 @@ fieldset.social-links {
 		min-width: $sl-48;
 	}
 
-	a.sl-rounded.sl-16 { @include border-radius( round($sl-16 / 6) ); }
-	a.sl-rounded.sl-24 { @include border-radius( round($sl-24 / 6) ); }
-	a.sl-rounded.sl-32 { @include border-radius( round($sl-32 / 6) ); }
-	a.sl-rounded.sl-48 { @include border-radius( round($sl-48 / 6) ); }
+	img.sl-rounded.sl-16 { @include border-radius( round($sl-16 / 6) ); }
+	img.sl-rounded.sl-24 { @include border-radius( round($sl-24 / 6) ); }
+	img.sl-rounded.sl-32 { @include border-radius( round($sl-32 / 6) ); }
+	img.sl-rounded.sl-48 { @include border-radius( round($sl-48 / 6) ); }
 
-	a.sl-circle {
+	img.sl-circle {
 		@include border-radius(50%);
 	}
 
@@ -159,7 +159,7 @@ fieldset.social-links {
 	.btn-github      { @include btn-social(#444444); }
 	.btn-email       { @include btn-social(#52bcd6); }
 	.btn-blog        { @include btn-social(#0c80b1); }
-	.btn-link        { @include btn-social(#54be93); }
+	.btn-home        { @include btn-social(#54be93); }
 	.btn-rss         { @include btn-social(#ff6f00); }
 
 	a.sl-color {
@@ -174,7 +174,7 @@ fieldset.social-links {
 		&.btn-github      { color: #444444; }
 		&.btn-email       { color: #52bcd6; }
 		&.btn-blog        { color: #0c80b1; }
-		&.btn-link        { color: #54be93; }
+		&.btn-home        { color: #54be93; }
 		&.btn-rss         { color: #ff6f00; }
 	}
 

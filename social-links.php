@@ -4,7 +4,7 @@
  * Plugin URI: http://tecsmith.com.au
  * Description: List your social links
  * Author: Vino Rodrigues
- * Version: 1.1.4
+ * Version: 1.1.5
  * Author URI: http://vinorodrigues.com
  *
  * @author Vino Rodrigues
@@ -51,7 +51,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 			case 'email': $what = 'envelope-o'; break;
 			case 'blog': $what = 'comment'; break;
 			case 'github': $what = 'github-alt'; break;
-			case 'home': $what = 'link'; break;
+			case 'home': $what = 'link fa-flip-vertical'; break;
 		}
 		$o = '<i class="fa fa-' . $what;
 		$o .= '"></i>';
@@ -359,7 +359,7 @@ class TS_Social_Links_Widget extends WP_Widget {
 			self::l($blog, 'blog', __('Blog', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if (!empty($home))
-			self::l($home, 'link', __('Home Page', 'ts_social_links'), $size, $shape, $use_fa);
+			self::l($home, 'home', __('Home Page', 'ts_social_links'), $size, $shape, $use_fa);
 
 		if ($rss)
 			self::l(get_bloginfo('rss2_url'), 'rss', __('RSS Feed', 'ts_social_links'), $size, $shape, $use_fa, 'application/rss+xml');
